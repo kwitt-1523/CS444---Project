@@ -232,6 +232,52 @@ void load_all_sessions() {
     // TODO: For Part 1.1, write your file operation code here.
     // Hint: Use get_session_file_path() to get the file path for each session.
     //       Don't forget to load all of sessions on the disk.
+
+    FILE *session_file;
+    char session_file_path[BUFFER_LEN] = "";
+    char buffer[BUFFER_LEN];
+    char value_buffer[BUFFER_LEN - 4];
+    char *eptr;
+    char current_value;
+    int index;
+
+    struct session_struct session_import;
+    char variable;
+    double value;
+
+    //Loop through session files
+    for(int x = 0; x < NUM_SESSIONS; x++){
+        get_session_file_path(x, session_file_path);
+        session_file = fopen(session_file_path, "r");
+        
+        if(session_file != NULL){
+            //Loop through lines in session file
+            printf("Session: %d\n", x);
+            while(fgets(buffer, BUFFER_LEN, (FILE*)session_file)){
+                variable = buffer[0];
+
+                index = 0;
+                current_value = buffer[4];
+                value_buffer[0] = current_value;
+                //Loop through digit in value
+                while(current_value != '\n'){
+                    index++;
+                    current_value = buffer[4 + index];
+                    value_buffer[index] = current_value;
+                }
+                value = strtod(value_buffer, &eptr);
+
+                //printf("%d\n", variable);
+                session_import.variables[variable - 97] = true;
+                session_import.values[variable - 97] = value;
+                session_list[x] = session_import;
+
+                printf("Variable: %d Value: %f\n", variable - 97, session_list[x].values[variable - 97]);
+            }
+        }
+        else
+            break;    
+    }  
 }
 
 /**
