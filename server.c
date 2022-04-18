@@ -395,11 +395,12 @@ void browser_handler(int browser_socket_fd) {
             broadcast(session_id, response);
             continue;
         }
+	else{
+            session_to_str(session_id, response);
+            broadcast(session_id, response);
 
-        session_to_str(session_id, response);
-        broadcast(session_id, response);
-
-        save_session(session_id);
+            save_session(session_id);
+        }
     }
 }
 
