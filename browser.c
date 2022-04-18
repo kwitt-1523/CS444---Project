@@ -58,8 +58,6 @@ void read_user_input(char message[]) {
     if ((strcmp(message, "EXIT") == 0) || (strcmp(message, "exit") == 0)) {
         browser_on = false;
     }
-    
-    close(fp);
 }
 
 /**
