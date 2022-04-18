@@ -69,9 +69,7 @@ void load_cookie() {
     // Hint: The file path of the cookie is stored in COOKIE_PATH.
     FILE *fp;
     char session_buffer[12];
-    printf("TEST\n");
     if(fp = fopen(COOKIE_PATH, "r")){
-       printf("TEST2\n");
        fgets(session_buffer, 12, (FILE*)fp);
        session_id = atoi(session_buffer);
     }
