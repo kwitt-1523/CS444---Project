@@ -116,8 +116,7 @@ void server_listener() {
     
     // TODO: For Part 3.1, add code here to print the error message.
     printf("Hello\n");
-    printf("%s\n", message);
-
+    
     puts(message);
 
     //}

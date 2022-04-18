@@ -158,7 +158,9 @@ bool process_message(int session_id, const char message[]) {
 
     // Processes "=".
     token = strtok(NULL, " ");
-
+    if(strcmp(token, "=") != 0){
+        return false;
+    }
     // Processes the first variable/value.
     token = strtok(NULL, " ");
 
