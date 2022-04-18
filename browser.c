@@ -89,7 +89,6 @@ void register_server() {
     receive_message(server_socket_fd, message);
     session_id = strtol(message, NULL, 10);
 }
-
 /**
  * Listens to the server; keeps receiving and printing the messages from the server.
  */
@@ -103,6 +102,7 @@ void server_listener() {
     receive_message(server_socket_fd, message);
 
     // TODO: For Part 3.1, add code here to print the error message.
+    printf("Hello\n");
 
     puts(message);
 
