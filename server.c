@@ -391,8 +391,6 @@ void browser_handler(int browser_socket_fd) {
             // TODO: For Part 3.1, add code here to send the error message to the browser.
             strcpy(response, "ERROR\n");
             printf("%s\n", response);
-            session_to_str(session_id, response);
-            broadcast(session_id, response);
             continue;
         }
 	else{
