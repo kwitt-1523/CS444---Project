@@ -58,6 +58,8 @@ void read_user_input(char message[]) {
     if ((strcmp(message, "EXIT") == 0) || (strcmp(message, "exit") == 0)) {
         browser_on = false;
     }
+    
+    close(fp);
 }
 
 /**
@@ -72,11 +74,11 @@ void load_cookie() {
     if(fp = fopen(COOKIE_PATH, "r")){
        fgets(session_buffer, 12, (FILE*)fp);
        session_id = atoi(session_buffer);
+       fclose(fp);
     }
     else{
        session_id = -1; // You may move this line to anywhere inside this fucntion.
     }
-    fclose(fp);
 }
 
 /**
