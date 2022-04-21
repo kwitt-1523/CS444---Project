@@ -85,7 +85,6 @@ void start_server(int port);
 void session_to_str(int session_id, char result[]) {
     memset(result, 0, BUFFER_LEN);
     session_t session = session_list[session_id];
-
     for (int i = 0; i < NUM_VARIABLES; ++i) {
         if (session.variables[i]) {
             char line[32];
@@ -397,13 +396,16 @@ void browser_handler(int browser_socket_fd) {
         if (!data_valid) {
             // TODO: For Part 3.1, add code here to send the error message to the browser.
             strcpy(response, "ERROR\n");
-            printf("%s\n", response);
+            broadcast(session_id, response);
+            save_session(session_id);
         }
+        else{
         session_to_str(session_id, response);
-        broadcast(session_id, response);
 
-        save_session(session_id);
+        broadcast(session_id, response);
         
+        save_session(session_id);
+        }
     }
 }
 

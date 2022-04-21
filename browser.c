@@ -16,7 +16,6 @@ static bool browser_on = true;  // Determines if the browser is on/off.
 static int server_socket_fd;    // The socket file descriptor of the server that is currently being connected.
 static int session_id;          // The session ID of the session on the server that is currently being accessed.
 
-char old_message[BUFFER_LEN];
 // Reads the user input from stdin.
 // If the input is "EXIT" or "exit",
 // changes the browser switch to false.
@@ -114,15 +113,13 @@ void server_listener() {
 
     char message[BUFFER_LEN];
     receive_message(server_socket_fd, message);
-
     // TODO: For Part 3.1, add code here to print the error message.
-    if(strcmp(message, old_message) == 0){
+    if(strcmp(message, "ERROR\n") == 0){
        puts("Invalid Input!");
     }
     else{
 
        puts(message);
-       strcpy(old_message, message);
     }
 
     //}
