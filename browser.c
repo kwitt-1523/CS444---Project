@@ -120,7 +120,6 @@ void server_listener() {
        puts("Invalid Input!");
     }
     else{
-
        puts(message);
        strcpy(old_message, message);
     }
