@@ -16,6 +16,7 @@ static bool browser_on = true;  // Determines if the browser is on/off.
 static int server_socket_fd;    // The socket file descriptor of the server that is currently being connected.
 static int session_id;          // The session ID of the session on the server that is currently being accessed.
 
+char old_message[BUFFER_LEN];
 // Reads the user input from stdin.
 // If the input is "EXIT" or "exit",
 // changes the browser switch to false.
@@ -35,7 +36,7 @@ void register_server();
 
 // Listens to the server.
 // Keeps receiving and printing the messages from the server.
-void server_listener();
+void *server_listener();
 
 // Starts the browser.
 // Sets up the connection, start the listener thread,
@@ -105,23 +106,26 @@ void register_server() {
 /**
  * Listens to the server; keeps receiving and printing the messages from the server.
  */
-void server_listener() {
+void *server_listener() {
     // TODO: For Part 2.3, uncomment the loop code that was commented out
     //  when you are done with multithreading.
 
-    // while (browser_on) {
+    while (browser_on) {
 
     char message[BUFFER_LEN];
     receive_message(server_socket_fd, message);
+
     // TODO: For Part 3.1, add code here to print the error message.
-    if(strcmp(message, "ERROR\n") == 0){
+    if(strcmp(message, old_message) == 0){
        puts("Invalid Input!");
     }
     else{
+
        puts(message);
+       strcpy(old_message, message);
     }
 
-    //}
+    }
 }
 
 /**
@@ -162,6 +166,10 @@ void start_browser(const char host_ip[], int port) {
     save_cookie();
 
     // Main loop to read in the user's input and send it out.
+
+    pthread_t t_browser;
+    pthread_create(&t_browser, NULL, server_listener, NULL);
+
     while (browser_on) {
         char message[BUFFER_LEN];
         read_user_input(message);
@@ -176,6 +184,7 @@ void start_browser(const char host_ip[], int port) {
 
     // Closes the socket.
     close(server_socket_fd);
+    pthread_exit(NULL);
     printf("Closed the connection to %s:%d.\n", host_ip, port);
 }
 
