@@ -109,7 +109,6 @@ void register_server() {
 void *server_listener() {
     // TODO: For Part 2.3, uncomment the loop code that was commented out
     //  when you are done with multithreading.
-
     while (browser_on) {
 
     char message[BUFFER_LEN];
@@ -169,11 +168,14 @@ void start_browser(const char host_ip[], int port) {
 
     pthread_t t_browser;
     pthread_create(&t_browser, NULL, server_listener, NULL);
+    
+
 
     while (browser_on) {
         char message[BUFFER_LEN];
         read_user_input(message);
         send_message(server_socket_fd, message);
+        
 
         // Starts the listener thread.
         // TODO: For Part 2.3, move server_listener() out of the loop and

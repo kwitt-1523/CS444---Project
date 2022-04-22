@@ -74,6 +74,7 @@ void *browser_handler(int browser_socket_fd);
 // and creates handlers for them.
 void start_server(int port);
 
+
 /**
  * Returns the string format of the given session.
  * There will be always 9 digits in the output string.
@@ -366,14 +367,15 @@ int register_browser(int browser_socket_fd) {
  *
  * @param browser_socket_fd the socket file descriptor of the browser connected
  */
-void  *browser_handler(int browser_socket_fd) {
+void *browser_handler(int browser_socket_fd) {
     int browser_id;
+    printf("NEW BROWSER HANDLER\n");
 
     browser_id = register_browser(browser_socket_fd);
-
+    printf("NEW BROWSER HANDLER2\n");
     int socket_fd = browser_list[browser_id].socket_fd;
     int session_id = browser_list[browser_id].session_id;
-    
+    printf("NEW BROWSER HANDLER3\n");
 
     printf("Successfully accepted Browser #%d for Session #%d.\n", browser_id, session_id);
 
@@ -396,7 +398,6 @@ void  *browser_handler(int browser_socket_fd) {
         if (message[0] == '\0') {
             continue;
         }
-
         bool data_valid = process_message(session_id, message);
         if (!data_valid) {
             // TODO: For Part 3.1, add code here to send the error message to the browser.
@@ -457,12 +458,10 @@ void start_server(int port) {
             perror("Socket accept failed");
             continue;
         }
-
         // Starts the handler thread for the new browser.
         // TODO: For Part 2.1, creat a thread to run browser_handler() here.
         pthread_t t_server;
-        pthread_create( &t_server , NULL , browser_handler( browser_socket_fd ) , (void *)browser_socket_fd );
-
+        pthread_create( &t_server , NULL , browser_handler, (void*) browser_socket_fd);
         //browser_handler(browser_socket_fd);
     }
 
