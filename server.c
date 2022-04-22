@@ -469,6 +469,7 @@ void start_server(int port) {
     }
 
     // Closes the socket.
+    pthread_exit();
     close(server_socket_fd);
 }
 
