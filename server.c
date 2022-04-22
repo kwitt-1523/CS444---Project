@@ -325,18 +325,15 @@ int register_browser(int browser_socket_fd) {
     // TODO: For Part 2.2, identify the critical sections where different threads may read from/write to
     //  the same shared static array browser_list and session_list. Place the lock and unlock
     //  code around the critical sections identified.
-
-    for (int i = 0; i < NUM_BROWSER; ++i) {
-            pthread_mutex_lock(&browser_list_mutex);
+    
+    for (int i = 0; i < NUM_BROWSER; ++i) {    
         if (!browser_list[i].in_use) {
             browser_id = i;
             browser_list[browser_id].in_use = true;
             browser_list[browser_id].socket_fd = browser_socket_fd;
             break;
         }
-        pthread_mutex_unlock(&browser_list_mutex);
     }
-
     char message[BUFFER_LEN];
     receive_message(browser_socket_fd, message);
 
