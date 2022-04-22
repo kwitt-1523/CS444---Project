@@ -179,7 +179,7 @@ void start_browser(const char host_ip[], int port) {
         // TODO: For Part 2.3, move server_listener() out of the loop and
         //  creat a thread to run it.
         // Hint: Should we place server_listener() before or after the loop?
-        server_listener();
+        //server_listener();
     }
 
     // Closes the socket.

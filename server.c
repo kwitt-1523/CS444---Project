@@ -372,10 +372,8 @@ void  *browser_handler(int browser_socket_fd) {
     browser_id = register_browser(browser_socket_fd);
 
     int socket_fd = browser_list[browser_id].socket_fd;
-
-    pthread_mutex_lock(&browser_list_mutex);
     int session_id = browser_list[browser_id].session_id;
-    pthread_mutex_unlock(&browser_list_mutex);
+    
 
     printf("Successfully accepted Browser #%d for Session #%d.\n", browser_id, session_id);
 
@@ -465,7 +463,7 @@ void start_server(int port) {
         pthread_t t_server;
         pthread_create( &t_server , NULL , browser_handler( browser_socket_fd ) , (void *)browser_socket_fd );
 
-        browser_handler(browser_socket_fd);
+        //browser_handler(browser_socket_fd);
     }
 
     // Closes the socket.
