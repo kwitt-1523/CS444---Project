@@ -326,12 +326,14 @@ int register_browser(int browser_socket_fd) {
     //  code around the critical sections identified.
 
     for (int i = 0; i < NUM_BROWSER; ++i) {
+            pthread_mutex_lock(&browser_list_mutex);
         if (!browser_list[i].in_use) {
             browser_id = i;
             browser_list[browser_id].in_use = true;
             browser_list[browser_id].socket_fd = browser_socket_fd;
             break;
         }
+        pthread_mutex_unlock(&browser_list_mutex);
     }
 
     char message[BUFFER_LEN];
@@ -342,7 +344,9 @@ int register_browser(int browser_socket_fd) {
         for (int i = 0; i < NUM_SESSIONS; ++i) {
             if (!session_list[i].in_use) {
                 session_id = i;
+                pthread_mutex_lock(&session_list_mutex);
                 session_list[session_id].in_use = true;
+                pthread_mutex_unlock(&session_list_mutex);
                 break;
             }
         }
@@ -368,7 +372,10 @@ void browser_handler(int browser_socket_fd) {
     browser_id = register_browser(browser_socket_fd);
 
     int socket_fd = browser_list[browser_id].socket_fd;
+
+    pthread_mutex_lock(&browser_list_mutex);
     int session_id = browser_list[browser_id].session_id;
+    pthread_mutex_unlock(&browser_list_mutex);
 
     printf("Successfully accepted Browser #%d for Session #%d.\n", browser_id, session_id);
 
