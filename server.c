@@ -462,6 +462,9 @@ void start_server(int port) {
 
         // Starts the handler thread for the new browser.
         // TODO: For Part 2.1, creat a thread to run browser_handler() here.
+        pthread_t t_server;
+        pthread_create(&t_server, NULL, browser_handler(), (void *)&t_server);
+
         browser_handler(browser_socket_fd);
     }
 
