@@ -66,7 +66,7 @@ int register_browser(int browser_socket_fd);
 // processing the message received,
 // broadcasting the update to all browsers with the same session ID,
 // and backing up the session on the disk.
-void browser_handler(int browser_socket_fd);
+void *browser_handler(int browser_socket_fd);
 
 // Starts the server.
 // Sets up the connection,
@@ -366,7 +366,7 @@ int register_browser(int browser_socket_fd) {
  *
  * @param browser_socket_fd the socket file descriptor of the browser connected
  */
-void browser_handler(int browser_socket_fd) {
+void  *browser_handler(int browser_socket_fd) {
     int browser_id;
 
     browser_id = register_browser(browser_socket_fd);
@@ -463,13 +463,13 @@ void start_server(int port) {
         // Starts the handler thread for the new browser.
         // TODO: For Part 2.1, creat a thread to run browser_handler() here.
         pthread_t t_server;
-        pthread_create(&t_server, NULL, browser_handler(), (void *)&t_server);
+        pthread_create( &t_server , NULL , browser_handler( browser_socket_fd ) , (void *)browser_socket_fd );
 
         browser_handler(browser_socket_fd);
     }
 
     // Closes the socket.
-    pthread_exit();
+    pthread_exit(NULL);
     close(server_socket_fd);
 }
 
